@@ -1,1 +1,15 @@
+
 _API_.py
+weatherEnv/*
+weatherEnv/Lib/*
+
+*.xlsx
+*.mp3
+*.mp4
+*.gif
+*.jpg
+*.jpeg
+*.png
+*.zip
+*.rar
+__pycache__
