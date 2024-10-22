@@ -51,7 +51,7 @@ class Database:
         LEFT JOIN COUNTRIES AS COUT ON CIT.COUNTRY_ID=COUNT.ID
         WHERE STA.ID = {STATE_ID}
         """
-        self.cursor.execute(self.SQL_QUERY_CITIES)
+        self.cities = self.cursor.execute(self.SQL_QUERY_CITIES).fetchall()
 
     
     
