@@ -16,10 +16,6 @@ class Database:
         self.conn = sqlite3.connect(self.db_name)
         self.cursor = self.conn.cursor()
 
-
-    def cursor(self):
-        self.conn.close()
- 
         
     def selectCountries(self):
         self.SQL_QUERY_CONUTRIES =  'SELECT * FROM COUNTRIES'
@@ -27,7 +23,7 @@ class Database:
         self.countriesDict = {
             country[1]:{"ID": country[0], "ISO3": country[2], "PHONE_CODE": country[3], 
                         "CAPITAL":country[4], "LATITUDE": country[7], "LONGITUDE": country[8]}  
-            for  country in self.countries
+            for country in self.countries
             }
 
     
@@ -35,12 +31,18 @@ class Database:
         self.SQL_QUERY_STATES = f"""
         SELECT ST.ID,ST.NAME,CT.NAME,ST.COUNTRY_CODE,ST.STATE_CODE,ST.LATITUDE,ST.LONGITUDE
         FROM STATES AS ST
-        LEFT JOIN COUNTRIES AS CT ON CT.ID=ST.COUNTRY_OD 
+        LEFT JOIN COUNTRIES AS CT ON CT.ID=ST.COUNTRY_ID 
         WHERE CT.ID = {COUNTRY_ID}"""
-        # self.cursor.execute(self.SQL_QUERY_STATES)
-        self.cursor.execute("SELECT * FROM STATES")
-        
+        self.states = self.cursor.execute(self.SQL_QUERY_STATES).fetchall()
+        self.statesDict = {
+            state[1]: {
+                "ID": state[0], "COUNTRY": state[2], "COUNTRY_CODE": state[3],
+                "STATE_CODE": state[4], "LATITUDE": state[5], "LONGITUDE": state[6]
+            }
+            for  state in self.states
+        }
 
+        
     def selectCities(self,  STATE_ID):
         self.SQL_QUERY_CITIES = f"""
         SELECT CIT.ID,CIT.NAME,STA.NAME CIT.STATE_CODE, CIT.COUNTRY_CODE, CIT.LATITUDE,  CIT.LONGITUDE
@@ -50,7 +52,7 @@ class Database:
         WHERE STA.ID = {STATE_ID}
         """
         self.cursor.execute(self.SQL_QUERY_CITIES)
-    
+
     
     
 class WeatherApp(Database):
@@ -75,7 +77,7 @@ class WeatherApp(Database):
                 self.selectStates(self.countriesDict.get(self.countryChoice).get('ID'))
                 
                 
-            
+        
 
     
 app = WeatherApp(URL,API_KEY,DB_NAME)
