@@ -45,10 +45,10 @@ class Database:
         
     def selectCities(self,  STATE_ID):
         self.SQL_QUERY_CITIES = f"""
-        SELECT CIT.ID,CIT.NAME,STA.NAME CIT.STATE_CODE, CIT.COUNTRY_CODE, CIT.LATITUDE,  CIT.LONGITUDE
+        SELECT CIT.ID, CIT.NAME, STA.NAME, CIT.STATE_CODE, CIT.COUNTRY_CODE, CIT.LATITUDE, CIT.LONGITUDE
         FROM CITIES AS CIT
         LEFT JOIN STATES AS STA ON CIT.STATE_ID = STA.ID
-        LEFT JOIN COUNTRIES AS COUT ON CIT.COUNTRY_ID=COUNT.ID
+        LEFT JOIN COUNTRIES AS COUNT ON CIT.COUNTRY_ID=COUNT.ID
         WHERE STA.ID = {STATE_ID}
         """
         self.cities = self.cursor.execute(self.SQL_QUERY_CITIES).fetchall()
@@ -67,15 +67,37 @@ class WeatherApp(Database):
         # }
 
 
-
     def sidebar(self):
         self.selectCountries()
+        # ülkeler listesi veritabanından çekiliyor
         
+        # sidebar oluşturuluyor.
         with st.sidebar:
+            # veritabanında çekilen ülkeler listesi açılır kutu şeklinde kullanıcıya listeleniyor
             self.countryChoice = st.selectbox('Choice Country',self.countriesDict.keys(),placeholder="choose a country",index=None)
+         
             if self.countryChoice:
+                # kullanıcı ülke seçimini yaptıktan sonra seçilen ülkenin id'si alınıyor 
+                # ve veritabanından o ülkenin id'sine göre (şehirler|eyaletler) listeleniyor
                 self.selectStates(self.countriesDict.get(self.countryChoice).get('ID'))
+                self.statesChoice = st.selectbox("Choice State",self.statesDict.keys(),placeholder="choose a state",index=None)
                 
+                
+                if self.statesChoice:
+                    # şehir|eyalet seçimi yapıldıise  seçilen eyaletin|şehrin id'si alınıyor
+                    # ve veritabanından o eyaletin|şehrin id'sine göre ileçe|şehir listeleniyor
+                   self.selectCities(self.statesDict.get(self.statesChoice).get('ID'))
+                   self.citiesChoice = st.selectbox("Choice City",self.cities,placeholder="choose a cities")
+                else:
+                    # şehir|eyalet seçimi  yapılmazsa default olarak boş liste gösteriliyor
+                    st.selectbox("Choice Cities",[''],placeholder="choose a cities",index=None)
+   
+                
+            else:
+                # uygulama ilk açıldığında bir ülke seçilmemiş ise kullanıcıya boş şehir ve ilçe listesi gösteriliyor
+                st.selectbox("Choice State",[''],placeholder="choose a state",index=None)
+                st.selectbox("Choice Cities",[''],placeholder="choose a cities",index=None)
+
                 
         
 
