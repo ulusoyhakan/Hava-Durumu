@@ -45,16 +45,11 @@ class Database:
         
     def selectCities(self,  STATE_ID):
         self.SQL_QUERY_CITIES = f"""
-        SELECT CIT.ID, CIT.NAME, STA.NAME, CIT.STATE_CODE,
-        CT.NAME, CIT.COUNTRY_CODE, CIT.LATITUDE, CIT.LONGITUDE
         SELECT CIT.ID, CIT.NAME, STA.NAME, CIT.STATE_CODE, CIT.COUNTRY_CODE, CIT.LATITUDE, CIT.LONGITUDE
         FROM CITIES AS CIT
         LEFT JOIN STATES AS STA ON CIT.STATE_ID=STA.ID
         LEFT JOIN COUNTRIES AS CT ON CIT.COUNTRY_ID=CT.ID
         WHERE STA.ID={STATE_ID}
-        LEFT JOIN STATES AS STA ON CIT.STATE_ID = STA.ID
-        LEFT JOIN COUNTRIES AS COUNT ON CIT.COUNTRY_ID=COUNT.ID
-        WHERE STA.ID = {STATE_ID}
         """
         self.cities = self.cursor.execute(self.SQL_QUERY_CITIES).fetchall()
         self.citiesDict = {city[1]: {
