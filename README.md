@@ -8,3 +8,8 @@ Python Streamlit kütüphanesini kullanarak seçile ülkenin şehrinin veya ilç
 
 - Seçilen ülke,şehir(eyalet),(ilçe) üzerinde harita uygulamasında gösterilmesi
 - Seçilen ülkenin haritada belirginleşmesi
+
+
+
+https://github.com/user-attachments/assets/eff63639-c923-412b-8ce3-bcedffbde112
+
