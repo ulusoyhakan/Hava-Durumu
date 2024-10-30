@@ -1,4 +1,4 @@
-from _API_ import API_KEY
+from API_ import API_KEY
 from datetime import datetime, timedelta, timezone
 import streamlit as st
 import pandas as pd
