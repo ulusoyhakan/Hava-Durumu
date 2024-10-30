@@ -153,7 +153,7 @@ class WeatherApp(Database):
                         # seçilen eyaletin|şehrin id'si alınıyor selectCities metodu
                         # ile seçilen eyaletin|şehrin id'sine göre ileçe|şehir listeleniyor
                         self.selectCities(self.statesDict.get(self.statesChoice).get('ID'))
-                        self.citiesChoice = st.selectbox("Şehir S eçimi",self.citiesDict.keys(),
+                        self.citiesChoice = st.selectbox("Şehir Seçimi",self.citiesDict.keys(),
                                                         placeholder="bir şehir veya ilçe seçin",index=None)
                     else:
                         # şehir|eyalet seçimi yapılmazsa default olarak boş liste gösteriliyor
@@ -190,7 +190,6 @@ class WeatherApp(Database):
             )
             return geojson
         except AttributeError as err:
-            print(err)
             return ""
     
 
@@ -276,8 +275,8 @@ class WeatherApp(Database):
                     st.table(df)
                 else:
                     st.info("Hava Durumu Bilgisi Bulunamadı.")
-        except AttributeError as err:
-            st.info("Lütfen bir şehir seçin.")
+        except AttributeError:
+            st.info("bir seçim yapın.")
             
     
     def appStart(self):
