@@ -233,7 +233,7 @@ class WeatherApp(Database):
             get_color="[0, 255, 255, 120]",
             get_radius=200,
             radius_scale=30,
-            radius_min_pixels=5,
+            radius_min_pixels=6,
             radius_max_pixels=20
         )
                 
